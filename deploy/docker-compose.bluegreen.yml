@@ -1,0 +1,31 @@
+﻿services:
+  api-blue:
+    build:
+      context: ..
+      dockerfile: src/MyApi/Dockerfile
+    container_name: api-blue
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "8081:8080"
+
+  api-green:
+    build:
+      context: ..
+      dockerfile: src/MyApi/Dockerfile
+    container_name: api-green
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "8082:8080"
+
+  router:
+    image: nginx:alpine
+    container_name: api-router
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api-blue
+      - api-green
