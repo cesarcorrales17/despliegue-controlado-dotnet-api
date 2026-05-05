@@ -30,12 +30,13 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
-
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/readiness", () => Results.Ok(new { ready = true }));
 app.Run();
-
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
 
 
